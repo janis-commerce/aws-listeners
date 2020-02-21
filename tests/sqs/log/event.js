@@ -2,7 +2,7 @@
 
 const assert = require('assert');
 
-const EventLogger = require('../../../lib/modules/log/event');
+const EventLogger = require('../../../lib/sqs/log/event');
 
 describe('Event Logger Test', () => {
 

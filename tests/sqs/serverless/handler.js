@@ -6,7 +6,7 @@ const sandbox = require('sinon').createSandbox();
 
 const { SQSListener, SQSServerlessHandler } = require('../../../lib');
 
-const EventLogger = require('../../../lib/modules/log/event');
+const EventLogger = require('../../../lib/sqs/log/event');
 
 class ListenerTest extends SQSListener {
 	setProps(props) {
