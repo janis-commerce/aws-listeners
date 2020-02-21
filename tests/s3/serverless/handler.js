@@ -4,7 +4,7 @@ const assert = require('assert');
 
 const sandbox = require('sinon').createSandbox();
 
-const { ServerlessHandler, S3Listener } = require('../../../lib');
+const { S3ServerlessHandler, S3Listener } = require('../../../lib');
 
 class ListenerTest extends S3Listener {
 	async process() {
@@ -49,60 +49,60 @@ describe('Serverless Handler Test', () => {
 	});
 
 	it('Should throw an error when s3 event is empty or invalid', () => {
-		assert.rejects(ServerlessHandler.handle(ListenerTest), {
-			name: 'ServerlessHandlerError',
+		assert.rejects(S3ServerlessHandler.handle(ListenerTest), {
+			name: 'S3ServerlessHandlerError',
 			code: 1,
 			message: 'Event cannot be empty and must be an object'
 		});
 
-		assert.rejects(ServerlessHandler.handle(ListenerTest, ''), {
-			name: 'ServerlessHandlerError',
+		assert.rejects(S3ServerlessHandler.handle(ListenerTest, ''), {
+			name: 'S3ServerlessHandlerError',
 			code: 1,
 			message: 'Event cannot be empty and must be an object'
 		});
 
-		assert.rejects(ServerlessHandler.handle(ListenerTest, {}), {
-			name: 'ServerlessHandlerError',
+		assert.rejects(S3ServerlessHandler.handle(ListenerTest, {}), {
+			name: 'S3ServerlessHandlerError',
 			code: 1,
 			message: 'Event cannot be empty and must be an object'
 		});
 	});
 
 	it('Should throw and error when event Records are empty or not an array', () => {
-		assert.rejects(ServerlessHandler.handle(ListenerTest, { Records: '' }), {
-			name: 'ServerlessHandlerError',
+		assert.rejects(S3ServerlessHandler.handle(ListenerTest, { Records: '' }), {
+			name: 'S3ServerlessHandlerError',
 			code: 2,
 			message: 'Event Records cannot be empty and must be an array'
 		});
 
-		assert.rejects(ServerlessHandler.handle(ListenerTest, { Records: [] }), {
-			name: 'ServerlessHandlerError',
+		assert.rejects(S3ServerlessHandler.handle(ListenerTest, { Records: [] }), {
+			name: 'S3ServerlessHandlerError',
 			code: 2,
 			message: 'Event Records cannot be empty and must be an array'
 		});
 	});
 
 	it('Should throw an error when records does not have an s3 object or is invalid', () => {
-		assert.rejects(ServerlessHandler.handle(ListenerTest, { Records: [{}] }), {
-			name: 'ServerlessHandlerError',
+		assert.rejects(S3ServerlessHandler.handle(ListenerTest, { Records: [{}] }), {
+			name: 'S3ServerlessHandlerError',
 			code: 3,
 			message: 'Cannot get the S3 event from Records'
 		});
 
-		assert.rejects(ServerlessHandler.handle(ListenerTest, { Records: [{ s3: {} }] }), {
-			name: 'ServerlessHandlerError',
+		assert.rejects(S3ServerlessHandler.handle(ListenerTest, { Records: [{ s3: {} }] }), {
+			name: 'S3ServerlessHandlerError',
 			code: 3,
 			message: 'Cannot get the S3 event from Records'
 		});
 
-		assert.rejects(ServerlessHandler.handle(ListenerTest, { Records: [{ s3: { bucket: {} } }] }), {
-			name: 'ServerlessHandlerError',
+		assert.rejects(S3ServerlessHandler.handle(ListenerTest, { Records: [{ s3: { bucket: {} } }] }), {
+			name: 'S3ServerlessHandlerError',
 			code: 3,
 			message: 'Cannot get the S3 event from Records'
 		});
 
-		assert.rejects(ServerlessHandler.handle(ListenerTest, { Records: [{ s3: { object: {} } }] }), {
-			name: 'ServerlessHandlerError',
+		assert.rejects(S3ServerlessHandler.handle(ListenerTest, { Records: [{ s3: { object: {} } }] }), {
+			name: 'S3ServerlessHandlerError',
 			code: 3,
 			message: 'Cannot get the S3 event from Records'
 		});
@@ -112,8 +112,8 @@ describe('Serverless Handler Test', () => {
 
 		const ListernerTestWithoutProcess = function() {};
 
-		assert.rejects(ServerlessHandler.handle(ListernerTestWithoutProcess, event), {
-			name: 'ServerlessHandlerError',
+		assert.rejects(S3ServerlessHandler.handle(ListernerTestWithoutProcess, event), {
+			name: 'S3ServerlessHandlerError',
 			code: 4,
 			message: 'Process method is required and must be a function'
 		});
@@ -128,8 +128,8 @@ describe('Serverless Handler Test', () => {
 			throw error;
 		};
 
-		assert.rejects(ServerlessHandler.handle(ListernerTestProcessError, event), {
-			name: 'ServerlessHandlerError',
+		assert.rejects(S3ServerlessHandler.handle(ListernerTestProcessError, event), {
+			name: 'S3ServerlessHandlerError',
 			code: 5,
 			message: 'This is an error originated on listener process method',
 			previousError: error
@@ -138,7 +138,7 @@ describe('Serverless Handler Test', () => {
 
 	it('Should process the event and set the properties to listener', () => {
 
-		assert.doesNotReject(ServerlessHandler.handle(ListenerTest, event));
+		assert.doesNotReject(S3ServerlessHandler.handle(ListenerTest, event));
 
 		sandbox.assert.calledOnce(ListenerTest.prototype.setProps);
 		sandbox.assert.calledWithExactly(ListenerTest.prototype.setProps, {
