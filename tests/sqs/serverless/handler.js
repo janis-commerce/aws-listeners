@@ -134,15 +134,15 @@ describe('SQS Serverless Handler Test', () => {
 		});
 	});
 
-	it('Should throw an error when listener validation throws an error', () => {
-		ListenerTest.prototype.struct = { id: 'number' };
+	// it('Should throw an error when listener validation throws an error', () => {
+	// 	ListenerTest.prototype.struct = { id: 'number' };
 
-		assert.rejects(SQSServerlessHandler.handle(ListenerTest, sqsMessage), {
-			name: 'SQSServerlessHandlerError',
-			code: 5,
-			message: 'Expected a value of type `undefined` for `client` but received `"fizzmod"`.'
-		});
-	});
+	// 	assert.rejects(SQSServerlessHandler.handle(ListenerTest, sqsMessage), {
+	// 		name: 'SQSServerlessHandlerError',
+	// 		code: 5,
+	// 		message: 'Expected a value of type `undefined` for `client` but received `"fizzmod"`.'
+	// 	});
+	// });
 
 	it('Should throw an error when listener process throws an error', () => {
 		const error = new Error('Process fail');
