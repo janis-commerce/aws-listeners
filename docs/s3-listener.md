@@ -1,11 +1,4 @@
-# aws-listeners
-
-A Package to implement lambda listeners for some AWS Service events
-
-## Installation
-```sh
-npm install @janiscommerce/aws-listeners
-```
+# S3listeners
 
 ## Configuration
 
