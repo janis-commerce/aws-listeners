@@ -1,7 +1,6 @@
 'use strict';
 
 const assert = require('assert');
-
 const sandbox = require('sinon').createSandbox();
 
 const { SNSServerlessHandler, SNSListener } = require('../../../lib');
@@ -111,33 +110,33 @@ describe('Serverless Handler Test', () => {
 		});
 	});
 
-	// it('Should throw an error when process is not found', () => {
+	it('Should throw an error when process is not found', () => {
 
-	// 	const ListernerTestWithoutProcess = function() {};
+		const ListernerTestWithoutProcess = function() {};
 
-	// 	assert.rejects(SNSServerlessHandler.handle(ListernerTestWithoutProcess, event), {
-	// 		name: 'SNSServerlessHandlerError',
-	// 		code: 4,
-	// 		message: 'Process method is required and must be a function'
-	// 	});
-	// });
+		assert.rejects(SNSServerlessHandler.handle(ListernerTestWithoutProcess, event), {
+			name: 'SNSServerlessHandlerError',
+			code: 4,
+			message: 'Process method is required and must be a function'
+		});
+	});
 
-	// it('Should throw an error when process throws an error', () => {
+	it('Should throw an error when process throws an error', async () => {
 
-	// 	const error = new Error('This is an error originated on listener process method');
+		const error = new Error('This is an error originated on listener process method');
 
-	// 	const ListernerTestProcessError = function() {};
-	// 	ListernerTestProcessError.prototype.process = async function() {
-	// 		throw error;
-	// 	};
+		const ListernerTestProcessError = function() {};
+		ListernerTestProcessError.prototype.process = async function() {
+			throw error;
+		};
 
-	// 	assert.rejects(SNSServerlessHandler.handle(ListernerTestProcessError, event), {
-	// 		name: 'SNSServerlessHandlerError',
-	// 		code: 5,
-	// 		message: 'This is an error originated on listener process method',
-	// 		previousError: error
-	// 	});
-	// });
+		await assert.rejects(SNSServerlessHandler.handle(ListernerTestProcessError, event), {
+			name: 'SNSServerlessHandlerError',
+			code: 5,
+			message: 'This is an error originated on listener process method',
+			previousError: error
+		});
+	});
 
 	it('Should process the event and set the properties to listener', () => {
 
