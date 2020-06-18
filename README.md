@@ -29,43 +29,18 @@ module.exports.handler = (...args) => ServerlessHandler.handle(SomeSQSFunction, 
 - **`S3`** Amazon Simple Storage Service (Amazon S3) is an object storage service that offers industry-leading scalability, data availability, security, and performance.
 - **`SNS`** Amazon Simple Notification Service (SNS) is a highly available, durable, secure, fully managed pub/sub messaging service that enables you to decouple microservices, distributed systems, and serverless applications.
 
-## Common methods
+## Common method
+There is a common method that in all the listeners are required and must have to implement
 
 ### async process()
 This method is required, and should have the logic of your Listener.
 
-The following methods will be inherited from the base Listener Class:
+## Expendend documentation
+for a more detailed explanation you can go to the following documents
 
-## S3Listener
-
-This is the class you should extend to code your own Listeners. You can customize them with the following methods and getters:
-
-### async getData()
-This method should return the data inside the S3 file (object) who generates the S3 event.
-
-### Getters
-
-* **bucketName** (*getter*).
-Returns the name of the S3 bucket where the event is generated
-
-* **fileKey** (*getter*).
-Returns the key of the S3 object (file). This fileKey prop returns the filePrefix + filename + fileExtentions
-
-* **filename** (*getter*).
-Returns the name of the file (S3 object).
-
-* **filePrefix** (*getter*).
-Returns the prefix of the file (S3 object).
-
-* **fileExtention** (*getter*).
-Returns the extention of the file (S3 object).
-
-* **filesize** (*getter*).
-Returns the size of the file (S3 object).
-
-* **fileTag** (*getter*).
-Returns the eTag of the file (S3 object).
-
+- **[S3](docs/s3-listener.md)**
+- **[SNS](docs/sns-listener.md)**
+- **[SQS](docs/sqs-listener.md)**
 
 ## Examples
 
