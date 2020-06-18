@@ -1,6 +1,4 @@
-# S3listeners
-
-## SNSListener
+# SNSListener
 
 This is the class you should extend to code your own Listeners. You can customize them with the following methods and getters:
 
