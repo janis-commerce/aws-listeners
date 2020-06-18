@@ -49,7 +49,7 @@ It also uses the following error codes:
 
 | Name | Value | Description |
 | --- | --- | --- |
-| INVALID_EVENT | 1 | The sns event is empty or invalid |
+| INVALID_EVENT | 1 | The SNS event is empty or invalid |
 | INVALID_RECORDS | 2 | The Records of the event are empty or invalid |
 | INVALID_MESSAGE | 3 | The SNS Message of the Records are empty or invalid |
 | PROCESS_NOT_FOUND | 4 | The process method is not implemented in the event listener class |
@@ -70,7 +70,7 @@ const {
 class MySNSEventListener extends SNSListener {
 
 	async process() {
-		/* ... Your code to process the s3 event was here ... */
+		/* ... Your code to process the sns event was here ... */
 	}
 
 }
