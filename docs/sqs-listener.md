@@ -2,19 +2,12 @@
 
 ## Configuration
 
-If you are working with serverless framework and want to use the serverless-s3-local plugin you need to config the enviroment variable S3_LOCAL_ENDPOINT
+If you are working with serverless framework and want to use the serverless-sqs-local plugin you can config the enviroment variable CLOUDWATCH_PREFIX
 
 ``` yml
 provider:
   environment:
-    S3_LOCAL_ENDPOINT: http://localhost:{serverless-s3-local-port}
-
-```
-
-``` yml
-provider:
-  environment:
-    S3_LOCAL_ENDPOINT: http://localhost:30232
+    CLOUDWATCH_PREFIX: some-prefix
 
 ```
 
@@ -27,13 +20,13 @@ This method is required, and should have the logic of your Listener.
 
 The following methods will be inherited from the base Listener Class:
 
-### async struct()
+#### async struct()
 This optional method is used to validate the data received in the request, checking the data to be use later.
 
-### async validate()
+#### async validate()
 This optional method should validate the struct if you use.
 
-### async addLog()
+#### async addLog()
 This method should return add the logs.
 
 ### Getters
