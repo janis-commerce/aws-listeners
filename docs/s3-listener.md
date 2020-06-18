@@ -93,7 +93,7 @@ It also uses the following error codes:
 const {
 	S3Listener,
 	S3ServerlessHandler
-} = require('@janiscommerce/s3-listener');
+} = require('@janiscommerce/aws-listeners');
 
 class MyS3EventListener extends S3Listener {
 
@@ -114,7 +114,7 @@ module.exports.handler = (...args) => S3ServerlessHandler.handle(MyS3EventListen
 const {
 	S3Listener,
 	S3ServerlessHandler
-} = require('@janiscommerce/s3-listener');
+} = require('@janiscommerce/aws-listeners');
 
 class MyS3EventListener extends S3Listener {
 
