@@ -1,7 +1,5 @@
 'use strict';
 
-require('lllog')('none');
-
 const assert = require('assert');
 
 const sandbox = require('sinon').createSandbox();
@@ -9,6 +7,8 @@ const sandbox = require('sinon').createSandbox();
 const CloudWatchLogs = require('../../../lib/modules/cloudwatch-logs/wrapper');
 
 const CloudWatchLogsEvents = require('../../../lib/modules/cloudwatch-logs/events');
+
+require('lllog')('none');
 
 const { CLOUDWATCH_PREFIX } = process.env;
 
@@ -82,50 +82,50 @@ describe('Cloud Watch Logs Events Test', () => {
 		await CloudWatchLogsEvents.prototype.log([]);
 	});
 
-	// it('Should log an error when get sequence token throw an error', async () => {
-	// 	const error = new Error('Cannot get any log');
-	// 	this.describeLogStreams.returns({ promise: () => Promise.reject(error) });
-	// 	await CloudWatchLogsEvents.prototype.log({ message: 'this is a test log' });
+	it('Should log an error when get sequence token throw an error', async () => {
+		const error = new Error('Cannot get any log');
+		this.describeLogStreams.returns({ promise: () => Promise.reject(error) });
+		await CloudWatchLogsEvents.prototype.log({ message: 'this is a test log' });
 
-	// 	this.describeLogStreams.returns({ promise: () => Promise.resolve() });
-	// 	await CloudWatchLogsEvents.prototype.log({ message: 'this is a test log' });
-	// });
+		this.describeLogStreams.returns({ promise: () => Promise.resolve() });
+		await CloudWatchLogsEvents.prototype.log({ message: 'this is a test log' });
+	});
 
-	// it('Should log an error when get sequence token throw an error', async () => {
-	// 	const error = new Error('Cannot get any log');
-	// 	this.describeLogStreams.returns({ promise: () => Promise.resolve({}) });
-	// 	this.createLogStream.returns({ promise: () => Promise.reject(error) });
+	it('Should log an error when get sequence token throw an error', async () => {
+		const error = new Error('Cannot get any log');
+		this.describeLogStreams.returns({ promise: () => Promise.resolve({}) });
+		this.createLogStream.returns({ promise: () => Promise.reject(error) });
 
-	// 	const logger = new CloudWatchLogsEvents();
-	// 	await logger.log({ message: 'this is a test log' });
+		const logger = new CloudWatchLogsEvents();
+		await logger.log({ message: 'this is a test log' });
 
-	// 	// eslint-disable-next-line no-underscore-dangle
-	// 	logger._newStream = false;
-	// 	await logger.log({ message: 'this is a test log' });
+		// eslint-disable-next-line no-underscore-dangle
+		logger._newStream = false;
+		await logger.log({ message: 'this is a test log' });
 
-	// 	this.describeLogStreams.returns({ promise: () => Promise.resolve({ logStreams: [] }) });
-	// 	await logger.log({ message: 'this is a test log' });
+		this.describeLogStreams.returns({ promise: () => Promise.resolve({ logStreams: [] }) });
+		await logger.log({ message: 'this is a test log' });
 
-	// 	this.describeLogStreams.returns({ promise: () => Promise.resolve({ logStreams: [{ logStreamName: 'test' }] }) });
-	// 	await logger.log({ message: 'this is a test log' });
+		this.describeLogStreams.returns({ promise: () => Promise.resolve({ logStreams: [{ logStreamName: 'test' }] }) });
+		await logger.log({ message: 'this is a test log' });
 
-	// 	// eslint-disable-next-line no-underscore-dangle
-	// 	logger._logStreamName = 'test';
-	// 	this.describeLogStreams.returns({ promise: () => Promise.resolve({ logStreams: [{ logStreamName: 'test', uploadSequenceToken: 12345 }] }) });
-	// 	await logger.log({ message: 'this is a test log' });
-	// });
+		// eslint-disable-next-line no-underscore-dangle
+		logger._logStreamName = 'test';
+		this.describeLogStreams.returns({ promise: () => Promise.resolve({ logStreams: [{ logStreamName: 'test', uploadSequenceToken: 12345 }] }) });
+		await logger.log({ message: 'this is a test log' });
+	});
 
-	// it('Should log an error when get sequence token throw an error', async () => {
-	// 	const error = new Error('Cannot get any log');
-	// 	this.describeLogStreams.returns({ promise: () => Promise.resolve({ logStreams: [{ logStreamName: 'test' }] }) });
-	// 	this.createLogStream.returns({ promise: () => Promise.resolve() });
-	// 	this.putLogEvents.returns({ promise: () => Promise.reject(error) });
+	it('Should log an error when get sequence token throw an error', async () => {
+		const error = new Error('Cannot get any log');
+		this.describeLogStreams.returns({ promise: () => Promise.resolve({ logStreams: [{ logStreamName: 'test' }] }) });
+		this.createLogStream.returns({ promise: () => Promise.resolve() });
+		this.putLogEvents.returns({ promise: () => Promise.reject(error) });
 
-	// 	const logger = new CloudWatchLogsEvents();
-	// 	await logger.log([{ message: 'this is a test log' }]);
+		const logger = new CloudWatchLogsEvents();
+		await logger.log([{ message: 'this is a test log' }]);
 
-	// 	await logger.log('This is test a message log');
-	// });
+		await logger.log('This is test a message log');
+	});
 
 	it('Should pass through and set the sequence token', async () => {
 		const nextSequenceToken = 12123213;
