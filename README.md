@@ -74,10 +74,7 @@ Returns the eTag of the file (S3 object).
 ```js
 'use strict';
 
-const {
-	S3Listener,
-	ServerlessHandler
-} = require('@janiscommerce/s3-listener');
+const { S3Listener, S3ServerlessHandler } = require('@janiscommerce/aws-listeners');
 
 class MyS3EventListener extends S3Listener {
 
@@ -88,5 +85,5 @@ class MyS3EventListener extends S3Listener {
 
 }
 
-module.exports.handler = (...args) => ServerlessHandler.handle(MyS3EventListener, ...args);
+module.exports.handler = (...args) => S3ServerlessHandler.handle(MyS3EventListener, ...args);
 ```
