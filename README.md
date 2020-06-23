@@ -35,7 +35,7 @@ There is a common method that in all the listeners are required and must have to
 ### async process()
 This method is required, and should have the logic of your Listener.
 
-## Expendend documentation
+## Extended documentation
 for a more detailed explanation you can go to the following documents
 
 - **[S3](docs/s3-listener.md)**
