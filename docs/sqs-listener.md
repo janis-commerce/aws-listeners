@@ -3,8 +3,7 @@
 This is the class you should extend to code your own Listeners. You can customize them with the following methods and getters:
 
 ## Configuration
-
-If you are working with serverless framework and want to use the serverless-sqs-local plugin you can config the enviroment variable CLOUDWATCH_PREFIX
+In case you want to save logs in cloudwatch in a grouped way, it is recommended to use the following environment variable `CLOUDWATCH_PREFIX`
 
 ``` yml
 provider:
