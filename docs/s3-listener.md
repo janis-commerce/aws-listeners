@@ -28,7 +28,7 @@ custom:
 You can customize them with the following methods and getters:
 
 ### async process()
-This method is required, and should have the logic of your Listener.
+This method is **REQUIRED**, and should have the logic of your Listener.
 
 The following methods will be inherited from the base Listener Class:
 
