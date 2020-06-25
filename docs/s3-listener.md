@@ -58,7 +58,7 @@ Returns the size of the file (S3 object).
 * **fileTag** (*getter*).
 Returns the eTag of the file (S3 object).
 
-## S3ServerlessHandler
+# S3ServerlessHandler
 
 This is the class you should use as a handler for your AWS Lambda functions.
 
