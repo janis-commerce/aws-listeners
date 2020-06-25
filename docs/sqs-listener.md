@@ -3,14 +3,7 @@
 This is the class you should extend to code your own Listeners. You can customize them with the following methods and getters:
 
 ## Configuration
-In case you want to save logs in cloudwatch in a grouped way, it is recommended to use the following environment variable `CLOUDWATCH_PREFIX`
-
-``` yml
-provider:
-  environment:
-    CLOUDWATCH_PREFIX: some-prefix
-
-```
+In case you want to log into cloudwatch, you need to create a LogGroup and an IAM role. In addition, the value of the log group must be set in an environment variable `CLOUDWATCH_PREFIX`
 
 ## Methods
 ### async process()

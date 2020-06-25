@@ -95,66 +95,6 @@ const bounceEvent = {
 	}
 };
 
-const emptyEvent = {
-	complaint: {
-		arrivalDate: '2016-01-27T14:59:38.237Z',
-		feedbackId: '000001378603177f-18c07c78-fa81-4a58-9dd1-fedc3cb8f49a-000000',
-		timestamp: '2016-01-27T14:59:38.237Z',
-		userAgent: 'AnyCompany Feedback Loop (V0.01)'
-	},
-	mail: {
-		commonHeaders: {
-			date: 'Wed, 27 Jan 2016 14:05:45 +0000',
-			from: [
-				'John Doe <john@example.com>'
-			],
-			messageId: 'custom-message-ID',
-			subject: 'Hello',
-			to: [
-				'Jane Doe <jane@example.com>, Mary Doe <mary@example.com>, Richard Doe <richard@example.com>'
-			]
-		},
-		headers: [
-			{
-				name: 'From',
-				value: '"John Doe" <john@example.com>'
-			},
-			{
-				name: 'To',
-				value: '"Jane Doe" <jane@example.com>, "Mary Doe" <mary@example.com>, "Richard Doe" <richard@example.com>'
-			},
-			{
-				name: 'Message-ID',
-				value: 'custom-message-ID'
-			},
-			{
-				name: 'Subject',
-				value: 'Hello'
-			},
-			{
-				name: 'Content-Type',
-				value: 'text/plain; charset="UTF-8"'
-			},
-			{
-				name: 'Content-Transfer-Encoding',
-				value: 'base64'
-			},
-			{
-				name: 'Date',
-				value: 'Wed, 27 Jan 2016 14:05:45 +0000'
-			}
-		],
-		headersTruncated: false,
-		messageId: '000001378603177f-7a5433e7-8edb-42ae-af10-f0181f34d6ee-000000',
-		sendingAccountId: '123456789012',
-		source: 'john@example.com',
-		sourceArn: 'arn:aws:ses:us-west-2:888888888888:identity/example.com',
-		sourceIp: '127.0.3.0',
-		timestamp: '2016-01-27T14:59:38.237Z'
-	},
-	notificationType: 'Complaint'
-};
-
 describe('SNS Listener Test', () => {
 
 	afterEach(() => {
@@ -165,27 +105,6 @@ describe('SNS Listener Test', () => {
 
 		const snsListener = new SNSListener(bounceEvent);
 
-		assert.deepStrictEqual(snsListener.notificationType, bounceEvent.notificationType);
-		assert.deepStrictEqual(snsListener.destinationRecipients, bounceEvent.mail.destination);
-		assert.deepStrictEqual(snsListener.rejectedRecipients, bounceEvent.bounce.bouncedRecipients);
-		assert.deepStrictEqual(snsListener.type, bounceEvent.bounce.bounceType);
-		assert.deepStrictEqual(snsListener.subType, bounceEvent.bounce.bounceSubType);
-		assert.deepStrictEqual(snsListener.mail, bounceEvent.mail);
-		assert.deepStrictEqual(snsListener.sendingAccountId, bounceEvent.mail.sendingAccountId);
-		assert.deepStrictEqual(snsListener.messageId, bounceEvent.mail.messageId);
-	});
-
-	it('Should return the properties inside the event pass through with default values with empty values', () => {
-
-		const snsListener = new SNSListener(emptyEvent);
-
-		assert.deepStrictEqual(snsListener.notificationType, emptyEvent.notificationType);
-		assert.deepStrictEqual(snsListener.destinationRecipients, []);
-		assert.deepStrictEqual(snsListener.rejectedRecipients, []);
-		assert.deepStrictEqual(snsListener.type, null);
-		assert.deepStrictEqual(snsListener.subType, null);
-		assert.deepStrictEqual(snsListener.mail, emptyEvent.mail);
-		assert.deepStrictEqual(snsListener.sendingAccountId, emptyEvent.mail.sendingAccountId);
-		assert.deepStrictEqual(snsListener.messageId, emptyEvent.mail.messageId);
+		assert.deepStrictEqual(snsListener.event, bounceEvent);
 	});
 });
