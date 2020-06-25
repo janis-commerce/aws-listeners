@@ -1,5 +1,7 @@
 # SQSlisteners
 
+This is the class you should extend to code your own Listeners. You can customize them with the following methods and getters:
+
 ## Configuration
 
 If you are working with serverless framework and want to use the serverless-sqs-local plugin you can config the enviroment variable CLOUDWATCH_PREFIX
@@ -11,10 +13,7 @@ provider:
 
 ```
 
-## SQSListener
-
-This is the class you should extend to code your own Listeners. You can customize them with the following methods and getters:
-
+## Methods
 ### async process()
 This method is required, and should have the logic of your Listener.
 

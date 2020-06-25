@@ -1,5 +1,7 @@
 # S3listeners
 
+You can customize them with the following methods and getters:
+
 ## Configuration
 
 If you are working with serverless framework and want to use the serverless-s3-local plugin you need to config the enviroment variable S3_LOCAL_ENDPOINT
@@ -14,19 +16,16 @@ provider:
 ``` yml
 provider:
   environment:
-    S3_LOCAL_ENDPOINT: http://localhost:30232
+    S3_LOCAL_ENDPOINT: http://localhost:{port}
 
 custom:
   s3:
-    port: 30232
+    port: {port}
     directory: ./tmp
 
 ```
 
-## S3Listener
-
-You can customize them with the following methods and getters:
-
+## Methods
 ### async process()
 This method is **REQUIRED**, and should have the logic of your Listener.
 
