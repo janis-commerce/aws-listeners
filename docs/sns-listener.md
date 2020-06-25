@@ -2,6 +2,7 @@
 
 This is the class you should extend to code your own Listeners. You can customize them with the following methods and getters:
 
+## Methods
 ### async process()
 This method is required, and should have the logic of your Listener.
 
@@ -30,7 +31,7 @@ Returns the messageId of the message.
 * **sendingAccountId** (*getter*).
 Returns the sendingAccountId of the message.
 
-# SNSServerlessHandler
+## SNSServerlessHandler
 
 This is the class you should use as a handler for your AWS Lambda functions.
 
