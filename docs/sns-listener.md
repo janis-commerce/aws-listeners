@@ -30,7 +30,7 @@ Returns the messageId of the message.
 * **sendingAccountId** (*getter*).
 Returns the sendingAccountId of the message.
 
-## SNSServerlessHandler
+# SNSServerlessHandler
 
 This is the class you should use as a handler for your AWS Lambda functions.
 
