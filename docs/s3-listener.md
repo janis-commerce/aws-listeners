@@ -25,7 +25,7 @@ custom:
 
 ## S3Listener
 
-This is the class you should extend to code your own Listeners. You can customize them with the following methods and getters:
+You can customize them with the following methods and getters:
 
 ### async process()
 This method is required, and should have the logic of your Listener.
