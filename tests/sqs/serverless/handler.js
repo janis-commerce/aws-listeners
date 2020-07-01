@@ -1,12 +1,11 @@
 'use strict';
 
+require('lllog')('none');
 const assert = require('assert');
 
 const sandbox = require('sinon').createSandbox();
 
 const { SQSListener, SQSServerlessHandler } = require('../../../lib');
-
-const EventLogger = require('../../../lib/sqs/log/event');
 
 class ListenerTest extends SQSListener {
 	setProps(props) {
@@ -58,8 +57,6 @@ describe('SQS Serverless Handler Test', () => {
 		};
 
 		sandbox.stub(ListenerTest.prototype, 'setProps');
-		sandbox.stub(EventLogger.prototype, 'log').returns(Promise.resolve());
-		sandbox.stub(EventLogger.prototype, 'logStreamName').value(logId);
 
 		sqsMessage.Records[0].messageAttributes = {};
 	});
@@ -134,16 +131,6 @@ describe('SQS Serverless Handler Test', () => {
 		});
 	});
 
-	// it('Should throw an error when listener validation throws an error', () => {
-	// 	ListenerTest.prototype.struct = { id: 'number' };
-
-	// 	assert.rejects(SQSServerlessHandler.handle(ListenerTest, sqsMessage), {
-	// 		name: 'SQSServerlessHandlerError',
-	// 		code: 5,
-	// 		message: 'Expected a value of type `undefined` for `client` but received `"fizzmod"`.'
-	// 	});
-	// });
-
 	it('Should throw an error when listener process throws an error', () => {
 		const error = new Error('Process fail');
 		ListenerTest.prototype.process = () => { throw error; };
@@ -165,8 +152,7 @@ describe('SQS Serverless Handler Test', () => {
 
 		sandbox.assert.calledOnce(ListenerTest.prototype.setProps);
 		sandbox.assert.calledWithExactly(ListenerTest.prototype.setProps, {
-			_event: event,
-			_logId: logId
+			_event: event
 		});
 	});
 });
