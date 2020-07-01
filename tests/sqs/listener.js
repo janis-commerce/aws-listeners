@@ -22,8 +22,6 @@ const event = {
 	id: '45'
 };
 
-const logId = '2019-11-22-legacy-order-null-15744013021390.477544306321267';
-
 const date = Date.now();
 
 describe('SQS Listener Test', () => {
@@ -84,11 +82,8 @@ describe('SQS Listener Test', () => {
 		]);
 	});
 
-	it('Should return the message attributes with and without logId', () => {
+	it('Should return the message attributes', () => {
 		const sqsListenerWithoutLogId = new SQSListener(event);
 		assert.deepStrictEqual(sqsListenerWithoutLogId.attributes, { MessageAttributes: {} });
-
-		const sqsListenerWithLogId = new SQSListener(event, logId);
-		assert.deepStrictEqual(sqsListenerWithLogId.attributes, { MessageAttributes: { logId: { DataType: 'String',	StringValue: logId } } });
 	});
 });
