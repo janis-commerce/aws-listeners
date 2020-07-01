@@ -11,9 +11,9 @@ const { S3Listener } = require('../../lib');
 const event = {
 	bucketName: 'test-bucket',
 	fileKey: 'testing/test.txt',
-	filename: 'test',
+	fileName: 'test',
 	filePrefix: 'testing',
-	filesize: 80,
+	fileSize: 80,
 	fileExtension: 'txt',
 	fileTag: 'f5edbddec6fc3d3a7fabe0e4c14d474b'
 };
@@ -35,9 +35,9 @@ describe('S3 Listener Test', () => {
 
 		assert.deepStrictEqual(s3Listener.bucketName, event.bucketName);
 		assert.deepStrictEqual(s3Listener.fileKey, event.fileKey);
-		assert.deepStrictEqual(s3Listener.filename, event.filename);
+		assert.deepStrictEqual(s3Listener.fileName, event.fileName);
 		assert.deepStrictEqual(s3Listener.filePrefix, event.filePrefix);
-		assert.deepStrictEqual(s3Listener.filesize, event.filesize);
+		assert.deepStrictEqual(s3Listener.fileSize, event.fileSize);
 		assert.deepStrictEqual(s3Listener.fileExtension, event.fileExtension);
 		assert.deepStrictEqual(s3Listener.fileTag, event.fileTag);
 	});

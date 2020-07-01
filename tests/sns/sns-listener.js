@@ -101,10 +101,10 @@ describe('SNS Listener Test', () => {
 		sandbox.restore();
 	});
 
-	it('Should return the properties inside the bounce event pass through', () => {
+	it('Should return the properties inside the bounce message pass through', () => {
 
 		const snsListener = new SNSListener(bounceEvent);
 
-		assert.deepStrictEqual(snsListener.event, bounceEvent);
+		assert.deepStrictEqual(snsListener.message, bounceEvent);
 	});
 });

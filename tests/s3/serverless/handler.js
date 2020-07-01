@@ -148,8 +148,8 @@ describe('Serverless Handler Test', () => {
 				fileKey: 'subscribers/test.json',
 				filePrefix: 'subscribers',
 				fileTag: 'f5edbddec6fc3d3a7fabe0e4c14d474b',
-				filename: 'test',
-				filesize: 84
+				fileName: 'test',
+				fileSize: 84
 			}
 		});
 	});
