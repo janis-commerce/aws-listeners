@@ -144,7 +144,7 @@ describe('Serverless Handler Test', () => {
 		sandbox.assert.calledWithExactly(ListenerTest.prototype.setProps, {
 			_event: {
 				bucketName: 'janis-events-service-local',
-				fileExtention: 'json',
+				fileExtension: 'json',
 				fileKey: 'subscribers/test.json',
 				filePrefix: 'subscribers',
 				fileTag: 'f5edbddec6fc3d3a7fabe0e4c14d474b',
