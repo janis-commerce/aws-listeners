@@ -144,7 +144,7 @@ describe('Serverless Handler Test', () => {
 
 		sandbox.assert.calledOnce(SNSListenerTest.prototype.setProps);
 		sandbox.assert.calledWithExactly(SNSListenerTest.prototype.setProps, {
-			_event: {
+			_message: {
 				notificationType: 'Bounce',
 				bounce: {
 					bounceType: 'Permanent',
