@@ -4,7 +4,7 @@ This is the class you should extend to code your own Listeners. You can customiz
 
 ## Methods
 ### async process()
-This method is required, and should have the logic of your Listener.
+This method is **REQUIRE**, and should have the logic of your Listener.
 
 ### Getters
 * **notificationType** (*getter*).
