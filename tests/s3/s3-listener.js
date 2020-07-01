@@ -14,11 +14,11 @@ const event = {
 	filename: 'test',
 	filePrefix: 'testing',
 	filesize: 80,
-	fileExtention: 'txt',
+	fileExtension: 'txt',
 	fileTag: 'f5edbddec6fc3d3a7fabe0e4c14d474b'
 };
 
-const jsonEvent = { ...event, fileKey: 'testing/test.json', fileExtention: 'json' };
+const jsonEvent = { ...event, fileKey: 'testing/test.json', fileExtension: 'json' };
 
 describe('S3 Listener Test', () => {
 
@@ -38,7 +38,7 @@ describe('S3 Listener Test', () => {
 		assert.deepStrictEqual(s3Listener.filename, event.filename);
 		assert.deepStrictEqual(s3Listener.filePrefix, event.filePrefix);
 		assert.deepStrictEqual(s3Listener.filesize, event.filesize);
-		assert.deepStrictEqual(s3Listener.fileExtention, event.fileExtention);
+		assert.deepStrictEqual(s3Listener.fileExtension, event.fileExtension);
 		assert.deepStrictEqual(s3Listener.fileTag, event.fileTag);
 	});
 

@@ -40,7 +40,7 @@ This method should return the data inside the S3 file (object) who generates the
 Returns the name of the S3 bucket where the event is generated
 
 * **fileKey** (*getter*).
-Returns the key of the S3 object (file). This fileKey prop returns the filePrefix + filename + fileExtentions
+Returns the key of the S3 object (file). This fileKey prop returns the filePrefix + filename + fileExtensions
 
 * **filename** (*getter*).
 Returns the name of the file (S3 object).
@@ -48,7 +48,7 @@ Returns the name of the file (S3 object).
 * **filePrefix** (*getter*).
 Returns the prefix of the file (S3 object).
 
-* **fileExtention** (*getter*).
+* **fileExtension** (*getter*).
 Returns the extention of the file (S3 object).
 
 * **filesize** (*getter*).
