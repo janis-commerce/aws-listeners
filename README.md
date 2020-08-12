@@ -17,20 +17,20 @@ const { SQSListener, ServerlessHandler } = require('@janiscommerce/aws-listeners
 class SomeSQSFunction extends SQSListener {
 
 	async process() {
-		// process the request
+		// process the message
 	}
 }
 
 module.exports.handler = (...args) => ServerlessHandler.handle(SomeSQSFunction, ...args);
 ```
-## AWS Services you can make a listener
+## Supported AWS Services
 
 - **`SQS`** Amazon Simple Queue Service (SQS) is a fully managed message queuing service that enables you to decouple and scale microservices, distributed systems, and serverless applications.
 - **`S3`** Amazon Simple Storage Service (Amazon S3) is an object storage service that offers industry-leading scalability, data availability, security, and performance.
 - **`SNS`** Amazon Simple Notification Service (SNS) is a highly available, durable, secure, fully managed pub/sub messaging service that enables you to decouple microservices, distributed systems, and serverless applications.
 
 ## Common method
-There is a common method that in all the listeners are required and must have to implement
+There is one common method that must be implemented in all the listeners:
 
 ### async process()
 This method is required, and should have the logic of your Listener.
@@ -55,7 +55,7 @@ class MyS3EventListener extends S3Listener {
 
 	async process() {
 		const data = await this.getData();
-		/* ... Your code to process the s3 event was here ... */
+		/* ... Your code to process the s3 event goes here ... */
 	}
 
 }

@@ -1,29 +1,6 @@
 # S3listeners
 
-You can customize them with the following methods and getters:
-
-## Configuration
-
-If you are working with serverless framework and want to use the serverless-s3-local plugin you need to config the enviroment variable S3_LOCAL_ENDPOINT
-
-``` yml
-provider:
-  environment:
-    S3_LOCAL_ENDPOINT: http://localhost:{serverless-s3-local-port}
-
-```
-
-``` yml
-provider:
-  environment:
-    S3_LOCAL_ENDPOINT: http://localhost:{port}
-
-custom:
-  s3:
-    port: {port}
-    directory: ./tmp
-
-```
+This is the class you should extend to code your own Listeners. You can customize them with the following methods and getters:
 
 ## Methods
 ### async process()
@@ -32,7 +9,7 @@ This method is **REQUIRED**, and should have the logic of your Listener.
 The following methods will be inherited from the base Listener Class:
 
 ### async getData()
-This method should return the data inside the S3 file (object) who generates the S3 event.
+This method returns the data of the S3 object that generated the S3 event. If the file extension is `.json`, it will be parsed with `JSON.parse()` before returning.
 
 ### Getters
 
@@ -63,7 +40,7 @@ This is the class you should use as a handler for your AWS Lambda functions.
 
 ### async handle(Listener, event, context, callback)
 This will handle the lambda execution.
-* Listener {Class} The event listener class. It's recommended to extend from this package `EventListener` class.
+* Listener {Class} The event listener class. It's recommended to extend from this package `S3Listener` class.
 * event {object} The lambda event object
 * context {object} The lambda context object
 * callback {function} The lambda callback function
@@ -82,6 +59,29 @@ It also uses the following error codes:
 | PROCESS_NOT_FOUND | 4 | The process method is not implemented in the event listener class |
 | INTERNAL_ERROR | 5 | Errors generated in the event listener class process method |
 
+## Configuration
+
+If you are working with serverless framework and want to use the serverless-s3-local plugin you need to config the enviroment variable S3_LOCAL_ENDPOINT
+
+``` yml
+provider:
+  environment:
+    S3_LOCAL_ENDPOINT: http://localhost:{serverless-s3-local-port}
+
+```
+
+``` yml
+provider:
+  environment:
+    S3_LOCAL_ENDPOINT: http://localhost:{port}
+
+custom:
+  s3:
+    port: {port}
+    directory: ./tmp
+
+```
+
 ## Examples
 
 ### Basic Listener
@@ -89,26 +89,7 @@ It also uses the following error codes:
 ```js
 'use strict';
 
-const {
-	S3Listener,
-	S3ServerlessHandler
-} = require('@janiscommerce/aws-listeners');
-
-class MyS3EventListener extends S3Listener {
-
-	async process() {
-		/* ... Your code to process the s3 event was here ... */
-	}
-
-}
-
-module.exports.handler = (...args) => S3ServerlessHandler.handle(MyS3EventListener, ...args);
-```
-
-### Get Data
-
-```js
-'use strict';
+const logger = require('lllog')();
 
 const {
 	S3Listener,
@@ -119,7 +100,9 @@ class MyS3EventListener extends S3Listener {
 
 	async process() {
 		const data = await this.getData();
-		/* ... Your code to process the s3 event was here ... */
+
+		logger.info(`Processing file '${this.fileKey}' from bucket '${this.bucketName}'`);
+		logger.info(`Content: ${data}`);
 	}
 
 }
