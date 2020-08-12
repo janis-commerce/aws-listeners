@@ -2,13 +2,13 @@
   "name": "@janiscommerce/aws-listeners",
   "version": "1.0.0",
   "description": "A Package to implement lambda listeners for every AWS Service events",
-  "main": "index.js",
+  "main": "lib/index.js",
   "scripts": {
     "test": "export TEST_ENV=true; mocha --exit -R nyan --recursive tests/",
     "test-ci": "nyc --reporter=html --reporter=text mocha --recursive tests/",
     "watch-test": "export TEST_ENV=true; mocha --exit -R nyan -w --recursive tests/",
     "coverage": "nyc npm test",
-    "lint": "eslint index.js lib/ tests/"
+    "lint": "eslint lib/ tests/"
   },
   "repository": {
     "type": "git",
@@ -25,6 +25,11 @@
     "mocha": "^5.2.0",
     "nyc": "^13.1.0",
     "sinon": "^7.3.2"
+  },
+  "dependencies": {
+    "@janiscommerce/superstruct": "^1.0.0",
+    "aws-sdk": "^2.556.0",
+    "lllog": "^1.1.2"
   },
   "files": [
     "lib/"
