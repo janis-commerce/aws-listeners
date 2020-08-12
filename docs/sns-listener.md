@@ -4,32 +4,11 @@ This is the class you should extend to code your own Listeners. You can customiz
 
 ## Methods
 ### async process()
-This method is **REQUIRE**, and should have the logic of your Listener.
+This method is **REQUIRED**, and should have the logic of your Listener.
 
 ### Getters
-* **notificationType** (*getter*).
-Returns the notificationType of the message.
-
-* **destinationRecipients** (*getter*).
-Returns the destinationRecipients of the message.
-
-* **rejectedRecipients** (*getter*).
-Returns the rejectedRecipients of the message.
-
-* **type** (*getter*).
-Returns the type of the message.
-
-* **subType** (*getter*).
-Returns the subType of the message.
-
-* **mail** (*getter*).
-Returns the mail of the message.
-
-* **messageId** (*getter*).
-Returns the messageId of the message.
-
-* **sendingAccountId** (*getter*).
-Returns the sendingAccountId of the message.
+* **message** (*getter*).
+Returns the message received in the event parsed using `JSON.parse()`.
 
 ## SNSServerlessHandler
 
@@ -37,7 +16,7 @@ This is the class you should use as a handler for your AWS Lambda functions.
 
 ### async handle(Listener, event, context, callback)
 This will handle the lambda execution.
-* Listener {Class} The event listener class. It's recommended to extend from this package `EventListener` class.
+* Listener {Class} The event listener class. It's recommended to extend from this package `SNSListener` class.
 * event {object} The lambda event object
 * context {object} The lambda context object
 * callback {function} The lambda callback function
@@ -63,6 +42,8 @@ It also uses the following error codes:
 ```js
 'use strict';
 
+const logger = require('lllog')();
+
 const {
 	SNSListener,
 	SNSServerlessHandler
@@ -71,7 +52,7 @@ const {
 class MySNSEventListener extends SNSListener {
 
 	async process() {
-		/* ... Your code to process the sns event was here ... */
+		logger.info(`Received a new message: ${JSON.stringify(this.message)}`);
 	}
 
 }

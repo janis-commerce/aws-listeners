@@ -50,6 +50,11 @@ describe('SQS Listener Test', () => {
 		}
 	});
 
+	it('Should pass validation if no struct is set', () => {
+		const sqsListener = new SQSListener({});
+		sqsListener.validate();
+	});
+
 	it('Should pass validation', () => {
 		const sqsListener = new SQSListener(event);
 		sqsListener.struct = struct;
@@ -80,10 +85,5 @@ describe('SQS Listener Test', () => {
 				message: 'This is a another test log'
 			}
 		]);
-	});
-
-	it('Should return the message attributes', () => {
-		const sqsListenerWithoutLogId = new SQSListener(event);
-		assert.deepStrictEqual(sqsListenerWithoutLogId.attributes, { MessageAttributes: {} });
 	});
 });
