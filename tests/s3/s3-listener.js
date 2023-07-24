@@ -1,18 +1,10 @@
 'use strict';
 
 const assert = require('assert');
-const sandbox = require('sinon');
 const { Readable } = require('stream');
 const { mockClient } = require('aws-sdk-client-mock');
 
-const S3 = require('../../lib/s3/s3-wrapper');
-const s3Wrapper = require('../../lib/s3/s3-wrapper/wrapper');
-
-const {
-	S3Client,
-	GetObjectCommand
-} = s3Wrapper;
-
+const { S3Client, GetObjectCommand } = require('../../lib/s3/s3-wrapper/wrapper');
 const { S3Listener } = require('../../lib');
 
 const event = {
@@ -27,7 +19,7 @@ const event = {
 
 const jsonEvent = { ...event, fileKey: 'testing/test.json', fileExtension: 'json' };
 
-describe.only('S3 Listener Test', () => {
+describe('S3 Listener Test', () => {
 
 	let s3ParamsForGetObject;
 
@@ -42,7 +34,7 @@ describe.only('S3 Listener Test', () => {
 			Bucket: 'examplebucket',
 			Key: 'objectkey'
 		};
-		console.log('s3ParamsForGetObject:', s3ParamsForGetObject);
+
 		this.s3ClientMock = mockClient(S3Client);
 	});
 
@@ -61,40 +53,59 @@ describe.only('S3 Listener Test', () => {
 		assert.deepStrictEqual(s3Listener.fileTag, event.fileTag);
 	});
 
-	it.only('Should return the S3 data', async () => {
+	it('Should return the S3 data', async () => {
 
 		const bodyReadable = new Readable();
 
 		bodyReadable.push('<Binary String>');
 		bodyReadable.push(null);
 
+		this.s3ClientMock.on(GetObjectCommand).resolves(s3ParamsForGetObject);
+
 		const s3Listener = new S3Listener(event);
 		const getData = await s3Listener.getData();
 
-		this.s3ClientMock.on(GetObjectCommand).resolves(s3ParamsForGetObject);
-
-		const getObjectInstance = await S3.getObject(s3ParamsForGetObject);
-
 		const bodyBuffered = Buffer.concat(await bodyReadable.toArray());
-		console.log('bodyBuffered:', bodyBuffered);
-		// assert.deepStrictEqual(getData, bodyBuffered);
-		assert.deepStrictEqual(getObjectInstance, {
-			...s3ParamsForGetObject,
-			Body: bodyBuffered
-		});
 
-		sandbox.assert.calledOnceWithExactly(getObjectInstance, { Bucket: event.bucketName, Key: event.fileKey });
+		assert.deepStrictEqual(getData, bodyBuffered);
+		this.s3ClientMock.commandCalls(GetObjectCommand, s3ParamsForGetObject);
+	});
+
+	it('Should return the S3 data with empty body', async () => {
+
+		const s3ParamsBodyEmpty = {
+			...s3ParamsForGetObject,
+			Body: undefined
+		};
+
+		this.s3ClientMock.on(GetObjectCommand).resolves(s3ParamsBodyEmpty);
+
+		const s3Listener = new S3Listener(event);
+		const getData = await s3Listener.getData();
+
+		assert.deepStrictEqual(getData, null);
+		this.s3ClientMock.commandCalls(GetObjectCommand, s3ParamsBodyEmpty);
 	});
 
 	it('Should return the S3 JSON data', async () => {
+
 		const body = { test: 'testing' };
-		this.S3.returns(Promise.resolve({ Body: JSON.stringify(body) }));
+		const bodyReadableNew = new Readable();
+
+		bodyReadableNew.push(JSON.stringify({ test: 'testing' }));
+		bodyReadableNew.push(null);
+
+		s3ParamsForGetObject = {
+			...s3ParamsForGetObject,
+			Body: bodyReadableNew
+		};
+
+		this.s3ClientMock.on(GetObjectCommand).resolves(s3ParamsForGetObject);
 
 		const s3Listener = new S3Listener(jsonEvent);
 		const getData = await s3Listener.getData();
 
 		assert.deepStrictEqual(getData, body);
-
-		sandbox.assert.calledOnceWithExactly(S3.get, { Bucket: event.bucketName, Key: jsonEvent.fileKey });
+		this.s3ClientMock.commandCalls(GetObjectCommand, s3ParamsForGetObject);
 	});
 });

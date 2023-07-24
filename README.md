@@ -1,7 +1,8 @@
 # aws-listeners
 
-[![Build Status](https://travis-ci.org/janis-commerce/aws-listeners.svg?branch=master)](https://travis-ci.org/janis-commerce/aws-listeners)
+![Build Status](https://github.com/janis-commerce/aws-listeners/workflows/Build%20Status/badge.svg)
 [![Coverage Status](https://coveralls.io/repos/github/janis-commerce/aws-listeners/badge.svg?branch=master)](https://coveralls.io/github/janis-commerce/aws-listeners?branch=master)
+[![npm version](https://badge.fury.io/js/%40janiscommerce%2Faws-listeners.svg)](https://www.npmjs.com/package/@janiscommerce/aws-listeners)
 
 A Package to implement lambda listeners for some AWS Service events
 

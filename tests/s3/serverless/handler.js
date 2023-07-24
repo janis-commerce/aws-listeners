@@ -38,7 +38,7 @@ const event = {
 	]
 };
 
-describe.skip('Serverless Handler Test', () => {
+describe('Serverless Handler Test', () => {
 
 	beforeEach(() => {
 		this.listenerTestProps = sandbox.stub(ListenerTest.prototype, 'setProps');
