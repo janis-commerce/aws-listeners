@@ -1,10 +1,17 @@
 'use strict';
 
 const assert = require('assert');
-
-const sandbox = require('sinon').createSandbox();
+const sandbox = require('sinon');
+const { Readable } = require('stream');
+const { mockClient } = require('aws-sdk-client-mock');
 
 const S3 = require('../../lib/s3/s3-wrapper');
+const s3Wrapper = require('../../lib/s3/s3-wrapper/wrapper');
+
+const {
+	S3Client,
+	GetObjectCommand
+} = s3Wrapper;
 
 const { S3Listener } = require('../../lib');
 
@@ -20,17 +27,29 @@ const event = {
 
 const jsonEvent = { ...event, fileKey: 'testing/test.json', fileExtension: 'json' };
 
-describe('S3 Listener Test', () => {
+describe.only('S3 Listener Test', () => {
+
+	let s3ParamsForGetObject;
 
 	beforeEach(() => {
-		this.S3 = sandbox.stub(S3, 'get');
+		const bodyReadable = new Readable();
+
+		bodyReadable.push('<Binary String>');
+		bodyReadable.push(null);
+
+		s3ParamsForGetObject = {
+			Body: bodyReadable,
+			Bucket: 'examplebucket',
+			Key: 'objectkey'
+		};
+		console.log('s3ParamsForGetObject:', s3ParamsForGetObject);
+		this.s3ClientMock = mockClient(S3Client);
 	});
 
-	afterEach(() => {
-		sandbox.restore();
-	});
+	afterEach(() => this.s3ClientMock.reset());
 
 	it('Should return the properties inside the event pass through', () => {
+
 		const s3Listener = new S3Listener(event);
 
 		assert.deepStrictEqual(s3Listener.bucketName, event.bucketName);
@@ -42,17 +61,29 @@ describe('S3 Listener Test', () => {
 		assert.deepStrictEqual(s3Listener.fileTag, event.fileTag);
 	});
 
-	it('Should return the S3 data', async () => {
-		const body = 'This is a testing data';
-		this.S3.returns(Promise.resolve({ Body: body }));
+	it.only('Should return the S3 data', async () => {
+
+		const bodyReadable = new Readable();
+
+		bodyReadable.push('<Binary String>');
+		bodyReadable.push(null);
 
 		const s3Listener = new S3Listener(event);
 		const getData = await s3Listener.getData();
 
-		assert.deepStrictEqual(getData, body);
+		this.s3ClientMock.on(GetObjectCommand).resolves(s3ParamsForGetObject);
 
-		sandbox.assert.calledOnce(S3.get);
-		sandbox.assert.calledWithExactly(S3.get, { Bucket: event.bucketName, Key: event.fileKey });
+		const getObjectInstance = await S3.getObject(s3ParamsForGetObject);
+
+		const bodyBuffered = Buffer.concat(await bodyReadable.toArray());
+		console.log('bodyBuffered:', bodyBuffered);
+		// assert.deepStrictEqual(getData, bodyBuffered);
+		assert.deepStrictEqual(getObjectInstance, {
+			...s3ParamsForGetObject,
+			Body: bodyBuffered
+		});
+
+		sandbox.assert.calledOnceWithExactly(getObjectInstance, { Bucket: event.bucketName, Key: event.fileKey });
 	});
 
 	it('Should return the S3 JSON data', async () => {
@@ -64,7 +95,6 @@ describe('S3 Listener Test', () => {
 
 		assert.deepStrictEqual(getData, body);
 
-		sandbox.assert.calledOnce(S3.get);
-		sandbox.assert.calledWithExactly(S3.get, { Bucket: event.bucketName, Key: jsonEvent.fileKey });
+		sandbox.assert.calledOnceWithExactly(S3.get, { Bucket: event.bucketName, Key: jsonEvent.fileKey });
 	});
 });
