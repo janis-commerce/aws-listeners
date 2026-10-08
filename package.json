@@ -5,12 +5,11 @@
   "main": "lib/index.js",
   "scripts": {
     "test": "export TEST_ENV=true; mocha --exit -R nyan --recursive tests/",
-    "test-ci": "export TEST_ENV=true; nyc --reporter=lcov --reporter=text-summary mocha --exit --recursive tests/",
     "watch-test": "export TEST_ENV=true; mocha --exit -R nyan -w --recursive tests/",
     "coverage": "nyc npm test",
     "lint": "eslint lib/ tests/",
     "prepare": "husky install",
-    "postpublish": "./.postpublish.sh"
+    "coverage-ci": "nyc --reporter=lcov --reporter=text-summary mocha --exit --recursive tests/"
   },
   "repository": {
     "type": "git",
@@ -20,18 +19,20 @@
   "license": "ISC",
   "homepage": "https://github.com/janis-commerce/aws-listeners.git#readme",
   "devDependencies": {
-    "aws-sdk-client-mock": "^2.2.0",
-    "eslint": "^8.45.0",
+    "aws-sdk-client-mock": "^4.0.2",
+    "eslint": "^8.57.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.27.5",
     "husky": "^8.0.3",
-    "mocha": "^10.2.0",
-    "nyc": "^15.1.0",
-    "sinon": "^15.2.0"
+    "mocha": "^10.7.3",
+    "nyc": "^17.1.0",
+    "sinon": "^19.0.2"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.374.0",
-    "@janiscommerce/superstruct": "^1.2.1",
+    "@aws-sdk/client-s3": "^3.1147.0",
+    "@janiscommerce/events": "^0.2.0",
+    "@janiscommerce/log": "^5.1.1",
+    "@janiscommerce/superstruct": "^1.2.2",
     "lllog": "^1.1.2"
   },
   "files": [
@@ -39,5 +40,8 @@
   ],
   "directories": {
     "test": "tests"
+  },
+  "engines": {
+    "node": ">=18"
   }
 }

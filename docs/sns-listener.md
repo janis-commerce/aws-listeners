@@ -14,12 +14,11 @@ Returns the message received in the event parsed using `JSON.parse()`.
 
 This is the class you should use as a handler for your AWS Lambda functions.
 
-### async handle(Listener, event, context, callback)
-This will handle the lambda execution.
+### async handle(Listener, event, context)
+This will handle the lambda execution. It calls `Log.start()` from `@janiscommerce/log` and always emits the `janiscommerce.ended` event when the execution finishes (with or without errors), so the Janis trace layer closes the invocation.
 * Listener {Class} The event listener class. It's recommended to extend from this package `SNSListener` class.
 * event {object} The lambda event object
-* context {object} The lambda context object
-* callback {function} The lambda callback function
+* context {object} The lambda context object. Its `awsRequestId` is set in `process.env.AWS_LAMBDA_REQUEST_ID`
 
 ## ServerlessHandlerError
 

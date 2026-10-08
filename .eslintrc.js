@@ -5,7 +5,7 @@ module.exports = {
 
 	env: {
 		node: true,
-		es6: true,
+		es2024: true,
 		mocha: true
 	},
 
@@ -20,7 +20,7 @@ module.exports = {
 
 	parserOptions: {
 		sourceType: 'script',
-		ecmaVersion: 2022
+		ecmaVersion: 2024
 	},
 
 	settings: {
