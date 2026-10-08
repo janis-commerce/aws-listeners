@@ -3,6 +3,9 @@
 const assert = require('assert');
 const sandbox = require('sinon').createSandbox();
 
+const Log = require('@janiscommerce/log');
+const Events = require('@janiscommerce/events');
+
 const { SNSServerlessHandler, SNSListener } = require('../../../lib');
 
 class SNSListenerTest extends SNSListener {
@@ -43,6 +46,9 @@ const event = {
 describe('Serverless Handler Test', () => {
 
 	beforeEach(() => {
+		sandbox.stub(Log, 'start');
+		sandbox.stub(Events, 'emit').resolves();
+		delete process.env.AWS_LAMBDA_REQUEST_ID;
 		this.listenerTestProps = sandbox.stub(SNSListenerTest.prototype, 'setProps');
 	});
 
@@ -232,6 +238,53 @@ describe('Serverless Handler Test', () => {
 					}
 				}
 			}
+		});
+	});
+
+	describe('Invocation close', () => {
+
+		const assertEnded = () => {
+			sandbox.assert.calledOnceWithExactly(Events.emit, 'janiscommerce.ended');
+		};
+
+		it('Should start the log, set the request id and emit ended when the process is ok', async () => {
+
+			await SNSServerlessHandler.handle(SNSListenerTest, event, { awsRequestId: 'request-id-1' });
+
+			sandbox.assert.calledOnceWithExactly(Log.start);
+			assert.strictEqual(process.env.AWS_LAMBDA_REQUEST_ID, 'request-id-1');
+			assertEnded();
+		});
+
+		it('Should set an empty request id when no context is received', async () => {
+
+			await SNSServerlessHandler.handle(SNSListenerTest, event);
+
+			assert.strictEqual(process.env.AWS_LAMBDA_REQUEST_ID, '');
+			assertEnded();
+		});
+
+		it('Should emit ended and propagate the error when process fails', async () => {
+
+			const error = new Error('process error');
+
+			const ListenerFail = function() {};
+			ListenerFail.prototype.process = async function() {
+				throw error;
+			};
+
+			await assert.rejects(SNSServerlessHandler.handle(ListenerFail, event, { awsRequestId: 'request-id-2' }), { code: 5, previousError: error });
+
+			assertEnded();
+		});
+
+		it('Should start the log before validating, emit ended and propagate the error when the event is invalid', async () => {
+
+			await assert.rejects(SNSServerlessHandler.handle(SNSListenerTest, {}, { awsRequestId: 'request-id-3' }), { code: 1 });
+
+			sandbox.assert.calledOnce(Log.start);
+			sandbox.assert.callOrder(Log.start, Events.emit);
+			assertEnded();
 		});
 	});
 
