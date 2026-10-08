@@ -17,7 +17,8 @@ This method returns the data of the S3 object that generated the S3 event. If th
 Returns the name of the S3 bucket where the event is generated
 
 * **fileKey** (*getter*).
-Returns the key of the S3 object (file). This fileKey prop returns the filePrefix + fileName + fileExtensions
+Returns the key of the S3 object (file), URL-decoded (S3 sends it encoded in the event). This fileKey prop returns the filePrefix + fileName + fileExtensions. The extension is the last dot-separated segment of the file name (`app.v1.2.apk` → fileName `app.v1.2`, fileExtension `apk`).
+If the event has more than one record, only the first one is processed and a warning is logged.
 
 * **fileName** (*getter*).
 Returns the name of the file (S3 object).
@@ -38,12 +39,11 @@ Returns the eTag of the file (S3 object).
 
 This is the class you should use as a handler for your AWS Lambda functions.
 
-### async handle(Listener, event, context, callback)
-This will handle the lambda execution.
+### async handle(Listener, event, context)
+This will handle the lambda execution. It calls `Log.start()` from `@janiscommerce/log` and always emits the `janiscommerce.ended` event when the execution finishes (with or without errors), so the Janis trace layer closes the invocation.
 * Listener {Class} The event listener class. It's recommended to extend from this package `S3Listener` class.
 * event {object} The lambda event object
-* context {object} The lambda context object
-* callback {function} The lambda callback function
+* context {object} The lambda context object. Its `awsRequestId` is set in `process.env.AWS_LAMBDA_REQUEST_ID`
 
 ## ServerlessHandlerError
 
