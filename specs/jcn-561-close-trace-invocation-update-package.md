@@ -26,6 +26,9 @@ Los listeners de S3 y SNS cierran la invocación con la trace layer al terminar,
 - S3:
   - `fileKey` URL-decodeado (`decodeURIComponent(key.replace(/\+/g, ' '))`).
   - Nombre/extensión con `lastIndexOf('.')`: la extensión es el último segmento; sin punto, extensión `undefined` y nombre completo.
+  - Key con percent-encoding mal formado → `S3ServerlessHandlerError` `INVALID_S3_RECORD` (en vez de `URIError` crudo).
+  - Archivo con punto inicial (`.hidden`) → nombre `.hidden`, extensión `undefined` (igual que `path.extname`); punto final (`file.`) → extensión `''`.
+  - `S3Listener.getData()`: extensión `json` sin distinguir mayúsculas (`FILE.JSON` se parsea) y `Body` vacío devuelve `null` en vez de `TypeError`.
   - Warning si llegan más de un record (se sigue procesando solo el primero).
   - `getObject`: no tragar errores del stream (hoy devuelve `Body: null`). Usar las utilidades del SDK v3 (`transformToByteArray`).
   - Config local del cliente S3 con claves del SDK v3 (`forcePathStyle`, `credentials`).

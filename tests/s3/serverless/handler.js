@@ -244,6 +244,16 @@ describe('Serverless Handler Test', () => {
 			});
 		});
 
+		it('Should reject with INVALID_S3_RECORD when the key has a malformed percent-encoding', async () => {
+
+			await assert.rejects(() => S3ServerlessHandler.handle(ListenerTest, eventWithKey('apps/100%.apk')), {
+				name: 'S3ServerlessHandlerError',
+				code: 3
+			});
+
+			sandbox.assert.calledOnceWithExactly(Events.emit, 'janiscommerce.ended');
+		});
+
 		it('Should use the last segment after the last dot as extension', async () => {
 
 			const received = await getReceivedEvent('apps/app.v1.2.apk');
